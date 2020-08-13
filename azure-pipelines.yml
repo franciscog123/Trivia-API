@@ -64,4 +64,4 @@ steps:
     azureSubscription: 'Azure subscription 1(282caa1f-eade-4353-b53b-23a39fbabd22)'
     appType: 'webApp'
     WebAppName: 'TriviaAPI'
-    package: $(System.DefaultWorkingDirectory)/**/*.zip    
+    package: $(System.DefaultWorkingDirectory)/*.zip    

@@ -47,4 +47,35 @@ stages:
 
     - publish: $(Build.ArtifactStagingDirectory)/app
       artifact: app
-      displayName: artifact publish app  
+      displayName: artifact publish app
+
+- stage: deploy
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn:
+  - build
+  pool:
+    vmImage: ubuntu-latest
+
+  jobs:
+
+  - deployment: deploy_dev
+
+    environment: dev
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - download: current
+            artifact: app
+            displayName: artifact download app
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: azure app service deploy
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Azure subscription 1(282caa1f-eade-4353-b53b-23a39fbabd22)'
+              appType: 'webApp'
+              WebAppName: 'Trivia-API'
+              packageForLinux: '$(Pipeline.Workspace)/app'

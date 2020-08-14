@@ -77,5 +77,5 @@ stages:
               ConnectionType: 'AzureRM'
               azureSubscription: 'Azure subscription 1(282caa1f-eade-4353-b53b-23a39fbabd22)'
               appType: 'webApp'
-              WebAppName: 'Trivia-API'
+              WebAppName: 'TriviaAPI'
               packageForLinux: '$(Pipeline.Workspace)/app'

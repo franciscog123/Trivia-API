@@ -1,58 +1,50 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
 - master
 
-pool:
-  vmImage: 'windows-latest'
+pr:
+- master
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
+  solutionPath: 'Trivia-API'
   buildConfiguration: 'Release'
+  sdkVersion: 3.1.x
+  startupProjectPath: Trivia-API/Trivia-Api
 
-steps:
-- task: NuGetToolInstaller@1
+stages: 
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+- stage: build
+  pool:
+    vmImage: ubuntu-latest
 
-- task: VSBuild@1
-  displayName: Build
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(Build.ArtifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  jobs:
 
-- task: VSTest@2
-  displayName: Test
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  - job: build
 
-# ...
-# do this after you've built your app, near the end of your pipeline in most cases
-# for example, you do this before you deploy to an Azure web app on Windows
-- task: DotNetCoreCLI@2
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
+    steps:
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    - task: UseDotNet@2
+      displayName: dotnet sdk $(sdkVersion)
+      inputs:
+        packageType: 'sdk'
+        version: '$(sdkVersion)'
+        
+        
+    - script: dotnet restore
+      displayName: dotnet restore
+      workingDirectory: $(solutionPath)
+      
+    - script: dotnet build
+       --configuration $(buildConfiguration)
+       --no-restore
+      displayName: dotnet build
+      workingDirectory: $(solutionPath)
+      
+    - script: dotnet publish
+        --configuration $(buildConfiguration)
+        --output $(Build.ArtifactStagingDirectory)/app
+      displayName: dotnet publish
+      workingDirectory: $(startupProjectPath)
 
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(282caa1f-eade-4353-b53b-23a39fbabd22)'
-    appType: 'webApp'
-    WebAppName: 'TriviaAPI'
-    package: $(System.DefaultWorkingDirectory)/**/*.zip    
+    - publish: $(Build.ArtifactStagingDirectory)/app
+      artifact: app
+      displayName: artifact publish app  

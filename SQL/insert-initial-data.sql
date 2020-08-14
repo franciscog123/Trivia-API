@@ -1,9 +1,9 @@
 
-insert into [User] ([Username], [Email], [Role],[CreatedDate]) values
-('francisco-proton','guerrerof615@protonmail.com', 'admin', GETDATE())
+insert into [User] ([Username], [Email], [Role],[CreatedDate], [TotalScore]) values
+('francisco-proton','guerrerof615@protonmail.com', 'admin', GETDATE(), 0)
 
-insert into [User] ([Username], [Email], [Role],[CreatedDate]) values
-('francisco-g','guerrerof615@gmail.com', 'user', GETDATE())
+insert into [User] ([Username], [Email], [Role],[CreatedDate], [TotalScore]) values
+('francisco-g','guerrerof615@gmail.com', 'user', GETDATE(), 0)
 
 insert into [GameMode] values
 ('Normal')

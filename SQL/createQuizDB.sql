@@ -1,10 +1,33 @@
 Go
+Drop table if exists [Choice]
+
+Go
+Drop table if exists [QuizQuestion]
+
+Go
+Drop table if exists [Category]
+
+Go
+Drop table if exists [Question]
+
+Go
+Drop table if exists [Quiz]
+
+Go
+DROP TABLE IF EXISTS [GameMode]
+
+Go
+Drop table if exists [User]
+
+
+Go
 create table [User](
 	[UserId] int identity,
 	[Username] nvarchar(30) not null,
 	[Email] nvarchar(200),
 	[Role] nvarchar(20) not null,
 	[CreatedDate] datetime not null,
+	[TotalScore] int not null,
 	constraint PK_AccountId primary key(UserId)
 )
 

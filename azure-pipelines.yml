@@ -5,10 +5,10 @@ pr:
 - master
 
 variables:
-  solutionPath: '*.sln'
+  solutionPath: 'Trivia-API'
   buildConfiguration: 'Release'
   sdkVersion: 3.1.x
-  startupProjectPath: Trivia-API/Trivia-Api
+  startupProjectPath: Trivia-API
 
 stages: 
 

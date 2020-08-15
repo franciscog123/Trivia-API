@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ApplicationCore.Models
 {
-    class Question
+    public class Question
     {
         public int QuestionId { get; set; }
         public int CategoryId { get; set; }

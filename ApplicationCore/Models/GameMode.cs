@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ApplicationCore.Models
 {
-    class GameMode
+    public class GameMode
     {
         public int GameModeId { get; set; }
         public string GameModeString { get; set; }

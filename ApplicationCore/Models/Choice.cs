@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ApplicationCore.Models
 {
-    class Choice
+    public class Choice
     {
         public int ChoiceId { get; set; }
         public int QuestionId { get; set; }

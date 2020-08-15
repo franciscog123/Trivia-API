@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ApplicationCore.Models
 {
-    class Category
+    public class Category
     {
         public int CategoryId { get; set; }
         public string CategoryString { get; set; }

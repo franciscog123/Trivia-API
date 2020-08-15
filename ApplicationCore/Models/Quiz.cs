@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ApplicationCore.Models
 {
-    class Quiz
+    public class Quiz
     {
         private int _score;
 

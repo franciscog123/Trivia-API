@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    interface IQuizRepository
+    public interface IQuizRepository
     {
         Task<IEnumerable<Quiz>> GetQuizzesAsync();
         Task<Quiz> AddQuizAsync(Quiz quiz);

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    interface IQuestionRepository
+    public interface IQuestionRepository
     {
         Task<IEnumerable<Question>> GetQuestionsAsync();
         Task<Question> GetQuestionAsync(int id);

@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.Interfaces;
+using Infrastructure.Context;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +32,10 @@ namespace Trivia_API
         {
             services.AddControllers();
 
+            services.AddDbContext<TriviaGameDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("TriviaDb")));
+
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

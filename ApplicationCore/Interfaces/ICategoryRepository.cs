@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    interface ICategoryRepository
+    public interface ICategoryRepository
     {
         Task<IEnumerable<Category>> GetCategoriesAsync();
         Task<Category> GetCategoryAsync(int id);

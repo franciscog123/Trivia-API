@@ -36,11 +36,11 @@ stages:
 
     - script: dotnet restore
       displayName: dotnet restore
-      workingDirectory: $(solutionPath)
+      workingDirectory: $riviaDbriviaDbonPath)
       
       env:
         TriviaDb: $(TriviaDb)
-    - script: dotnet build $env:TriviaDb
+    - script: dotnet build $TriviaDb
        --configuration $(buildConfiguration)
        --no-restore
       displayName: dotnet build

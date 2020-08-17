@@ -35,8 +35,8 @@ stages:
 
 
       env:
-        TriviaDb: $(TriviaDb)
-    - script: dotnet build $TriviaDb
+        TRIVIADB: $(TriviaDb)
+    - script: dotnet build $TRIVIADB
        --configuration $(buildConfiguration)
        --no-restore
       displayName: dotnet build

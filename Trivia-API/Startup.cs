@@ -33,7 +33,7 @@ namespace Trivia_API
             services.AddControllers();
 
             services.AddDbContext<TriviaGameDBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("TriviaDb")));
+                options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB")));
 
             services.AddScoped<IUserRepository, UserRepository>();
         }

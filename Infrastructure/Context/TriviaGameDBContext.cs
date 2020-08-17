@@ -28,7 +28,7 @@ namespace Infrastructure.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=TriviaDb");
+                optionsBuilder.UseSqlServer("Name=TRIVIADB");
             }
         }
 

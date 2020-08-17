@@ -39,25 +39,13 @@ namespace Trivia_API
             if (env.IsProduction())
             {
                 services.AddDbContext<TriviaGameDBContext>(options =>
-                options.UseSqlServer(Configuration["TRIVIADB"]));
+                options.UseSqlServer(Configuration["TRIVIADB2"]));
             }
             else
             {
                 services.AddDbContext<TriviaGameDBContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB_dev")));
             }
-            /*bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
-           
-            if(isProduction)
-            {
-                services.AddDbContext<TriviaGameDBContext>(options =>
-                options.UseSqlServer(Configuration["Section:TRIVIADB"]));
-            }
-            else
-            {
-                services.AddDbContext<TriviaGameDBContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB")));
-            }*/
 
             services.AddScoped<IUserRepository, UserRepository>();
         }
@@ -81,11 +69,6 @@ namespace Trivia_API
                 endpoints.MapControllers();
             });
 
-            app.Run(async context =>
-            {
-                context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync($@"SecretName (Name in Key Vault: 'TRIVIADB'){Environment.NewLine}Obtained from Configuration with Configuration[""SecretName""]{Environment.NewLine}Value: {Configuration["TRIVIADB"]}{Environment.NewLine}{Environment.NewLine}Section:SecretName (Name in Key Vault: 'Section--TRIVIADB'){Environment.NewLine}Obtained from Configuration with Configuration[""Section:SecretName""]{Environment.NewLine}Value: {Configuration["Section:TRIVIADB"]}{Environment.NewLine}{Environment.NewLine}Section:SecretName (Name in Key Vault: 'Section--TRIVIADB'){Environment.NewLine}Obtained from Configuration with Configuration.GetSection(""Section"")[""SecretName""]{Environment.NewLine}Value: {Configuration.GetSection("Section")["TRIVIADB"]}");
-            });
         }
     }
 }

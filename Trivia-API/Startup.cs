@@ -32,8 +32,17 @@ namespace Trivia_API
         {
             services.AddControllers();
 
-            services.AddDbContext<TriviaGameDBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB")));
+            bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
+            if(isProduction)
+            {
+                services.AddDbContext<TriviaGameDBContext>(options =>
+                options.UseSqlServer(Configuration["Section:TRIVIADB"]));
+            }
+            else
+            {
+                services.AddDbContext<TriviaGameDBContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB")));
+            }
 
             services.AddScoped<IUserRepository, UserRepository>();
         }

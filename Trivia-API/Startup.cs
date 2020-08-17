@@ -39,12 +39,12 @@ namespace Trivia_API
             if (env.IsProduction())
             {
                 services.AddDbContext<TriviaGameDBContext>(options =>
-                options.UseSqlServer(Configuration["Section:TRIVIADB"]));
+                options.UseSqlServer(Configuration["TRIVIADB"]));
             }
             else
             {
                 services.AddDbContext<TriviaGameDBContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB")));
+               options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB_dev")));
             }
             /*bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
            
@@ -84,7 +84,7 @@ namespace Trivia_API
             app.Run(async context =>
             {
                 context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync($@"SecretName (Name in Key Vault: 'SecretName'){Environment.NewLine}Obtained from Configuration with Configuration[""SecretName""]{Environment.NewLine}Value: {Configuration["SecretName"]}{Environment.NewLine}{Environment.NewLine}Section:SecretName (Name in Key Vault: 'Section--SecretName'){Environment.NewLine}Obtained from Configuration with Configuration[""Section:SecretName""]{Environment.NewLine}Value: {Configuration["Section:SecretName"]}{Environment.NewLine}{Environment.NewLine}Section:SecretName (Name in Key Vault: 'Section--SecretName'){Environment.NewLine}Obtained from Configuration with Configuration.GetSection(""Section"")[""SecretName""]{Environment.NewLine}Value: {Configuration.GetSection("Section")["SecretName"]}");
+                await context.Response.WriteAsync($@"SecretName (Name in Key Vault: 'TRIVIADB'){Environment.NewLine}Obtained from Configuration with Configuration[""SecretName""]{Environment.NewLine}Value: {Configuration["TRIVIADB"]}{Environment.NewLine}{Environment.NewLine}Section:SecretName (Name in Key Vault: 'Section--TRIVIADB'){Environment.NewLine}Obtained from Configuration with Configuration[""Section:SecretName""]{Environment.NewLine}Value: {Configuration["Section:TRIVIADB"]}{Environment.NewLine}{Environment.NewLine}Section:SecretName (Name in Key Vault: 'Section--TRIVIADB'){Environment.NewLine}Obtained from Configuration with Configuration.GetSection(""Section"")[""SecretName""]{Environment.NewLine}Value: {Configuration.GetSection("Section")["TRIVIADB"]}");
             });
         }
     }

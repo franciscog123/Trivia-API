@@ -32,8 +32,10 @@ namespace Trivia_API
         {
             services.AddControllers();
 
-            bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
-            if(isProduction)
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+            Microsoft.AspNetCore.Hosting.IWebHostEnvironment env = serviceProvider.GetService<IWebHostEnvironment>();
+
+            if (env.IsProduction())
             {
                 services.AddDbContext<TriviaGameDBContext>(options =>
                 options.UseSqlServer(Configuration["Section:TRIVIADB"]));
@@ -43,6 +45,18 @@ namespace Trivia_API
                 services.AddDbContext<TriviaGameDBContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB")));
             }
+            /*bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
+           
+            if(isProduction)
+            {
+                services.AddDbContext<TriviaGameDBContext>(options =>
+                options.UseSqlServer(Configuration["Section:TRIVIADB"]));
+            }
+            else
+            {
+                services.AddDbContext<TriviaGameDBContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("TRIVIADB")));
+            }*/
 
             services.AddScoped<IUserRepository, UserRepository>();
         }

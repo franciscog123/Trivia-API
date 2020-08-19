@@ -24,6 +24,7 @@ namespace Trivia_API
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
+                    //this section connects to azure key vault and pulls DB connection string
                     if (context.HostingEnvironment.IsProduction())
                     {
                         var builtConfig = config.Build();

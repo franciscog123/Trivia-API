@@ -9,7 +9,6 @@ variables:
   buildConfiguration: 'Release'
   sdkVersion: 3.1.x
   startupProjectPath: Trivia-API
-  system.debug: true
 
 stages: 
 
@@ -35,9 +34,7 @@ stages:
       workingDirectory: $(solutionPath)
 
 
-      env:
-        TRIVIADB: $(TriviaDb)
-    - script: dotnet build $TRIVIADB
+    - script: dotnet build
        --configuration $(buildConfiguration)
        --no-restore
       displayName: dotnet build

@@ -28,7 +28,7 @@ namespace Trivia_API.Controllers
         /// <response code="204">If there is no data</response>
         // GET: api/<UserController>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ApplicationCore.Models.User>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Get()
         {
@@ -41,13 +41,27 @@ namespace Trivia_API.Controllers
             return Ok(users);
         }
 
+        /// <summary>
+        /// Retrieves a single user.
+        /// </summary>
+        /// <param name="id">The id of the user to be returned.</param>
+        /// <returns></returns>
+        /// <response code="200">Returns the user information.</response>
+        /// <response code="404">If the user is not found.</response>
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        [ProducesResponseType(typeof(ApplicationCore.Models.User), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            if(await _userRepository.GetUserAsync(id) is ApplicationCore.Models.User user)
+            {
+                return Ok(user);
+            }
+            return NotFound();
         }
 
+        /*
         // POST api/<UserController>
         [HttpPost]
         public void Post([FromBody] string value)
@@ -65,5 +79,6 @@ namespace Trivia_API.Controllers
         public void Delete(int id)
         {
         }
+        */
     }
 }

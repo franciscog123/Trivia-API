@@ -26,7 +26,16 @@ namespace Infrastructure.Repositories
             List<Entities.User> users = await _context.User.ToListAsync();
 
             return users.Select(Mapper.Map);
+        }
 
+        public async Task<ApplicationCore.Models.User> GetUserAsync(int id)
+        {
+            var item = await _context.User.FindAsync(id);
+
+            if (item is null)
+                return null;
+
+            return Mapper.Map(item);
         }
     }
 }

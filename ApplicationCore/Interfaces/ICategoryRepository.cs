@@ -8,6 +8,6 @@ namespace ApplicationCore.Interfaces
     {
         Task<IEnumerable<Category>> GetCategoriesAsync();
         Task<Category> GetCategoryAsync(int id);
-        Task<Category> AddCategoryAsync(Category category);
+        //Task<Category> AddCategoryAsync(Category category);
     }
 }

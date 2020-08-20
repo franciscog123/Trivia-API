@@ -8,9 +8,9 @@ namespace ApplicationCore.Interfaces
     {
         Task<IEnumerable<Question>> GetQuestionsAsync();
         Task<Question> GetQuestionAsync(int id);
-        Task<Question> AddQuestionAsync(Question question);
-        Task<Question> PutQuestionAsync(int id, Question question);
-        Task<bool> RemoveQuestionAsync(int id);
-        Task<Question> GetRandomQuestion(int categoryId);
+        //Task<Question> AddQuestionAsync(Question question);
+        //Task<Question> PutQuestionAsync(int id, Question question);
+        //Task<bool> RemoveQuestionAsync(int id);
+        //Task<Question> GetRandomQuestion(int categoryId);
     }
 }

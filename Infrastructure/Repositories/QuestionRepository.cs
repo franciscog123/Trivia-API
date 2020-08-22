@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,5 +43,48 @@ namespace Infrastructure.Repositories
             return Mapper.Map(item);
         }
 
+        public async Task<ApplicationCore.Models.Question> AddQuestionAsync(ApplicationCore.Models.Question question)
+        {
+            if (question is null)
+            {
+                throw new ArgumentNullException(nameof(question));
+            }
+
+            Entities.Question entity = Mapper.Map(question);
+
+            await _context.Question.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            //add questionchoices to db
+            foreach (var choice in question.QuestionChoices)
+            {
+                var coreChoice = new ApplicationCore.Models.Choice {
+                    QuestionId = entity.QuestionId,
+                    Correct = (bool)choice.Correct,
+                    ChoiceString = choice.ChoiceString
+                };
+
+                await AddChoiceAsync(coreChoice);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Mapper.Map(entity);
+        }
+
+        public async Task<ApplicationCore.Models.Choice> AddChoiceAsync(ApplicationCore.Models.Choice choice)
+        {
+            if (choice is null)
+            {
+                throw new ArgumentNullException(nameof(choice));
+            }
+
+            Entities.Choice entity = Mapper.Map(choice);
+
+            await _context.Choice.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return Mapper.Map(entity);
+        }
     }
 }

@@ -5,10 +5,10 @@ Go
 Drop table if exists [QuizQuestion]
 
 Go
-Drop table if exists [Category]
+Drop table if exists [Question]
 
 Go
-Drop table if exists [Question]
+Drop table if exists [Category]
 
 Go
 Drop table if exists [Quiz]

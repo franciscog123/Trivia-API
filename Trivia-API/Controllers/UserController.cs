@@ -61,13 +61,34 @@ namespace Trivia_API.Controllers
             return NotFound();
         }
 
-        /*
+        /// <summary>
+        /// Adds a new user.
+        /// </summary>
+        /// <param name="user">The user object that will be created.</param>
+        /// <returns></returns>
+        /// /// <response code="201">Returns the user information if creation was successful.</response>
+        /// <response code="400">If invalid data was submitted.</response>
+        /// <remarks>Id is not required input.</remarks>
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(typeof(ApplicationCore.Models.User), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] ApplicationCore.Models.User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var createdItem = await _userRepository.AddUserAsync(user);
+
+            return CreatedAtAction(
+                actionName: nameof(Get),
+                routeValues: new { id = createdItem.Id },
+                value: createdItem);
         }
 
+        /*
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

@@ -69,7 +69,7 @@ namespace Infrastructure
         {
             return new Entities.Choice
             {
-                ChoiceId = choice.ChoiceId,
+                //ChoiceId = choice.ChoiceId,
                 Choice1 = choice.ChoiceString,
                 QuestionId = choice.QuestionId,
                 Correct = (bool)choice.Correct
@@ -105,7 +105,7 @@ namespace Infrastructure
                 QuestionString = question.Question1,
                 Value = question.Value,
                 QuestionChoices = question.Choice.Select(Map).ToList(),
-                Category = Map(question.Category)
+                //Category = Map(question.Category)
             };
         }
 
@@ -113,11 +113,11 @@ namespace Infrastructure
         {
             return new Entities.Question
             {
-                QuestionId = question.QuestionId,
+                //QuestionId = question.QuestionId,
                 CategoryId = question.CategoryId,
                 Question1 = question.QuestionString,
                 Value = question.Value,
-                Choice = question.QuestionChoices.Select(Map).ToList(),
+                //Choice = question.QuestionChoices.Select(Map).ToList(),
                 //Category = Map(question.Category)
             };
         }

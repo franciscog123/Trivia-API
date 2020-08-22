@@ -6,7 +6,6 @@ using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Trivia_API.Controllers
 {
@@ -22,7 +21,7 @@ namespace Trivia_API.Controllers
         }
 
         /// <summary>
-        /// Retreives all questions with choices and the category for each question. 
+        /// Retreives all questions with choices. 
         /// </summary>
         /// <returns></returns>
         /// /// <response code="200">Returns all questions and related data.</response>
@@ -60,13 +59,67 @@ namespace Trivia_API.Controllers
             return NotFound();
         }
 
-        /*
+        /// <summary>
+        /// Adds a new question with a minimum of 4 choices.
+        /// </summary>
+        /// <remarks>
+        /// Sample Request:
+        /// 
+        ///     POST /api/question
+        ///     {
+        ///         "categoryId": 4,
+        ///         "questionString": "test question",
+        ///         "value": 10,
+        ///         "questionChoices": [
+        ///             {
+        ///                 "correct": true,
+        ///                 "choiceString": "right choice"
+        ///             },
+        ///             {
+        ///                 "correct": false,
+        ///                 "choiceString": "wrong"
+        ///             },
+        ///             {
+        ///                 "correct": false,
+        ///                 "choiceString": "wrong"
+        ///             },
+        ///             {
+        ///                 "correct": false,
+        ///                 "choiceString": "wrong again"
+        ///             }
+        ///         ]
+        ///     }
+        /// Question must have at least 4 choices.
+        /// </remarks>
+        /// <param name="question">The question object passed in the response body.</param>
+        /// <returns></returns>
+        /// <response code="201">Returns the question information if creation was successful.</response>
+        /// <response code="400">If invalid data was submitted.</response>
         // POST api/<QuestionController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(typeof(ApplicationCore.Models.Question),StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] ApplicationCore.Models.Question question)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if(question.QuestionChoices.Count <4)
+            {
+                return BadRequest("Question must have at least 4 choices.");
+            }
+
+            var createdItem = await _questionRepo.AddQuestionAsync(question);
+
+            return CreatedAtAction(
+                actionName: nameof(Get),
+                routeValues: new { id = createdItem.QuestionId },
+                value: createdItem);
         }
 
+        /*
         // PUT api/<QuestionController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

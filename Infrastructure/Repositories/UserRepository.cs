@@ -37,5 +37,20 @@ namespace Infrastructure.Repositories
 
             return Mapper.Map(item);
         }
+
+        public async Task<ApplicationCore.Models.User> AddUserAsync(ApplicationCore.Models.User user)
+        {
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            Entities.User entity = Mapper.Map(user);
+
+            await _context.User.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return Mapper.Map(entity);
+        }
     }
 }

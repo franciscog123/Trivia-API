@@ -87,19 +87,5 @@ namespace Trivia_API.Controllers
                 routeValues: new { id = createdItem.CategoryId },
                 value: createdItem);
         }
-
-        /*
-        // PUT api/<CategoryController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<CategoryController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-        */
     }
 }

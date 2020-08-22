@@ -55,6 +55,7 @@ namespace Trivia_API
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IGameModeRepository, GameModeRepository>();
+            services.AddScoped<IChoiceRepository, ChoiceRepository>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

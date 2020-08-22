@@ -8,7 +8,7 @@ namespace ApplicationCore.Interfaces
     {
         Task<IEnumerable<User>> GetUsersAsync();
         Task<User> GetUserAsync(int id);
-        //Task<User> AddUserAsync(User user);
+        Task<User> AddUserAsync(User user);
         //Task<bool> RemoveUserAsync(int id);
     }
 }

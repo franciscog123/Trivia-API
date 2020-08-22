@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Models;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,5 +35,21 @@ namespace Infrastructure.Repositories
 
             return Mapper.Map(item);
         }
+
+        public async Task<ApplicationCore.Models.Category> AddCategoryAsync(ApplicationCore.Models.Category category)
+        {
+            if(category is null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
+            Entities.Category entity = Mapper.Map(category);
+
+            await _context.Category.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return Mapper.Map(entity);
+        }
+
     }
 }

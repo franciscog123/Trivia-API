@@ -49,7 +49,7 @@ namespace Infrastructure
         {
             return new Entities.Category
             {
-                CategoryId = category.CategoryId,
+                //CategoryId = category.CategoryId,
                 Category1 = category.CategoryString
             };
         }
@@ -118,7 +118,7 @@ namespace Infrastructure
                 Question1 = question.QuestionString,
                 Value = question.Value,
                 Choice = question.QuestionChoices.Select(Map).ToList(),
-                Category = Map(question.Category)
+                //Category = Map(question.Category)
             };
         }
 

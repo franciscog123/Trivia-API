@@ -89,7 +89,7 @@ namespace Trivia_API.Controllers
         ///             }
         ///         ]
         ///     }
-        /// Question must have at least 4 choices.
+        /// Question must have at least 4 choices. questionId and choiceId inputs are not required and discarded if input.
         /// </remarks>
         /// <param name="question">The question object passed in the response body.</param>
         /// <returns></returns>
@@ -102,14 +102,11 @@ namespace Trivia_API.Controllers
         public async Task<IActionResult> Post([FromBody] ApplicationCore.Models.Question question)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest();
-            }
-
             if(question.QuestionChoices.Count <4)
-            {
                 return BadRequest("Question must have at least 4 choices.");
-            }
+            if (!await _questionRepo.CategoryExistsAsync((int)question.CategoryId))
+                return BadRequest($"Category with id {question.CategoryId} does not exist.");
 
             var createdItem = await _questionRepo.AddQuestionAsync(question);
 
@@ -119,13 +116,84 @@ namespace Trivia_API.Controllers
                 value: createdItem);
         }
 
-        /*
+        /// <summary>
+        /// Updates an existing question with its choices. Adds choices if they don't exist and removes choices if they exist in the database but are not included in response body.
+        /// </summary>
+        /// <param name="id">The id of the question to be updated or added.</param>
+        /// <param name="question">The question object passed in the response body.</param>
+        /// <returns></returns>
+        /// <response code="204">If modification of question object was successful</response>
+        /// <response code="400">If invalid data was submitted.</response>
+        /// <response code="404">If attempting to modify a question that does not exist.</response>
+        /// <remarks>
+        ///    Sample Request:
+        ///    PUT /api/question/1
+        ///    
+        ///    {
+        ///        "questionId": 1,
+        ///        "categoryId": 1,
+        ///        "questionString": "Which war movie won the Academy Award for Best Picture in 2009?",
+        ///        "value": 10,
+        ///        "questionChoices": [
+        ///            {
+        ///                "choiceId": 1,
+        ///                "questionId": 1,
+        ///                "correct": true,
+        ///                "choiceString": "The Hurt Locker"
+        ///            },
+        ///            {
+        ///                "choiceId": 2,
+        ///                "questionId": 1,
+        ///                "correct": false,
+        ///                "choiceString": "Avatar"
+        ///            },
+        ///            {
+        ///                "choiceId": 3,
+        ///                "questionId": 1,
+        ///                "correct": false,
+        ///                "choiceString": "Zombieland"
+        ///            },
+        ///            {
+        ///                "choiceId": 4,
+        ///                "questionId": 1,
+        ///                "correct": false,
+        ///                "choiceString": "Inglourious Bastardos"
+        ///            }
+        ///        ]
+        ///    }
+        ///Question must have at least 4 choices.
+        ///</remarks>
         // PUT api/<QuestionController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> Put(int id, [FromBody] ApplicationCore.Models.Question question)
         {
+            try
+            {
+                if (id != question.QuestionId)
+                    return BadRequest("Question Ids do not match.");
+                if (question.QuestionChoices.Count < 4)
+                    return BadRequest("Question must have at least 4 choices.");
+
+                var existing = await _questionRepo.GetQuestionAsync(id);
+                if (existing is null)
+                    return NotFound();
+
+                var success = await _questionRepo.EditQuestionAsync(question);
+                if (!success)
+                    return BadRequest();
+
+                return NoContent();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
+        /*
         // DELETE api/<QuestionController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)

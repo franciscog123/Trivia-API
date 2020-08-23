@@ -69,7 +69,17 @@ namespace Infrastructure
         {
             return new Entities.Choice
             {
-                //ChoiceId = choice.ChoiceId,
+                ChoiceId = choice.ChoiceId,
+                Choice1 = choice.ChoiceString,
+                QuestionId = choice.QuestionId,
+                Correct = (bool)choice.Correct
+            };
+        }
+
+        public static Entities.Choice MapChoiceWithoutId(ApplicationCore.Models.Choice choice)
+        {
+            return new Entities.Choice
+            {
                 Choice1 = choice.ChoiceString,
                 QuestionId = choice.QuestionId,
                 Correct = (bool)choice.Correct
@@ -114,10 +124,23 @@ namespace Infrastructure
             return new Entities.Question
             {
                 //QuestionId = question.QuestionId,
-                CategoryId = question.CategoryId,
+                CategoryId = (int)question.CategoryId,
                 Question1 = question.QuestionString,
                 Value = question.Value,
                 //Choice = question.QuestionChoices.Select(Map).ToList(),
+                //Category = Map(question.Category)
+            };
+        }
+
+        public static Entities.Question MapQuestionWithChoices(ApplicationCore.Models.Question question)
+        {
+            return new Entities.Question
+            {
+                QuestionId = question.QuestionId,
+                CategoryId = (int)question.CategoryId,
+                Question1 = question.QuestionString,
+                Value = question.Value,
+                Choice = question.QuestionChoices.Select(Map).ToList(),
                 //Category = Map(question.Category)
             };
         }

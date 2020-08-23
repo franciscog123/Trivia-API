@@ -10,8 +10,9 @@ namespace ApplicationCore.Models
     {
         public int QuestionId { get; set; }
 
+        //nullable int so model validation kicks in if no categoryId provided, instead of defaulting to 0
         [Required]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         [Required]
         public string QuestionString { get; set; }

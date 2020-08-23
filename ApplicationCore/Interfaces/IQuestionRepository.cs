@@ -13,7 +13,7 @@ namespace ApplicationCore.Interfaces
         Task<bool> QuestionExistsAsync(int id);
         Task<bool> CategoryExistsAsync(int id);
         Task<bool> EditQuestionAsync(Question question);
-        //Task<bool> RemoveQuestionAsync(int id);
+        Task<bool> RemoveQuestionAsync(int id);
         //Task<Question> GetRandomQuestion(int categoryId);
     }
 }

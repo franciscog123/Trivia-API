@@ -138,14 +138,25 @@ namespace Infrastructure.Repositories
                     }
                 }
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch
             {
                 return false;
             }
-            
+        }
+
+        public async Task<bool> RemoveQuestionAsync(int id)
+        {
+            //DB was created with ON DELETE CASCADE so no extra work needed to delete related objects
+            if(await _context.Question.FindAsync(id) is Entities.Question item)
+            {
+                _context.Question.Remove(item);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
     }

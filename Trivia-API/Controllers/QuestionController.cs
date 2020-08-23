@@ -122,7 +122,7 @@ namespace Trivia_API.Controllers
         /// <param name="id">The id of the question to be updated or added.</param>
         /// <param name="question">The question object passed in the response body.</param>
         /// <returns></returns>
-        /// <response code="204">If modification of question object was successful</response>
+        /// <response code="204">If modification of question object was successful.</response>
         /// <response code="400">If invalid data was submitted.</response>
         /// <response code="404">If attempting to modify a question that does not exist.</response>
         /// <remarks>
@@ -193,11 +193,23 @@ namespace Trivia_API.Controllers
             }
         }
 
-        /*
+        /// <summary>
+        /// Deletes the question and related choices of the given question id.
+        /// </summary>
+        /// <param name="id">The Id of the question to be deleted.</param>
+        /// <returns></returns>
+        /// <response code="204">If deletion of the question and choices was successful</response>
+        /// <response code="404">If attempting to delete a question that does not exist.</response>
         // DELETE api/<QuestionController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
         {
-        }*/
+            if (await _questionRepo.RemoveQuestionAsync(id))
+                return NoContent();
+
+            return NotFound();
+        }
     }
 }

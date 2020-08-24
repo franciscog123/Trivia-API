@@ -40,8 +40,6 @@ stages:
       displayName: dotnet build
       workingDirectory: $(solutionPath)
       
-    - script: echo $TRIVIADB
-      displayName: echo 
 
     - script: dotnet publish
         --configuration $(buildConfiguration)

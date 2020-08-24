@@ -40,6 +40,21 @@ namespace Infrastructure.Repositories
             return questions.Select(Mapper.Map);
         }
 
+        public async Task<IEnumerable<ApplicationCore.Models.Question>> GetQuestionsByCategoryAsync(int categoryId)
+        {
+            var questions = await _context.Question
+                .Include(question => question.Category)
+                .Include(question => question.Choice)
+                .Where(question => question.CategoryId == categoryId)
+                .ToListAsync();
+
+            if (questions is null)
+                return null;
+
+            return questions.Select(Mapper.Map);
+        }
+
+
         public async Task<ApplicationCore.Models.Question> GetQuestionAsync(int id)
         {
             var item = await _context.Question
@@ -51,6 +66,31 @@ namespace Infrastructure.Repositories
                 return null;
 
             return Mapper.Map(item);
+        }
+
+        public async Task<ApplicationCore.Models.Question> GetRandomQuestionAsync()
+        {
+            var randomQuestion = await _context.Question
+                .Include(item => item.Choice)
+                .OrderBy(o => Guid.NewGuid()).FirstAsync();
+
+            if (randomQuestion is null)
+                return null;
+
+            return Mapper.Map(randomQuestion);
+        }
+
+        public async Task<ApplicationCore.Models.Question> GetRandomQuestionByCategoryAsync(int categoryId)
+        {
+            var randomQuestion = await _context.Question
+                .Include(item => item.Choice)
+                .Where(item => item.CategoryId == categoryId)
+                .OrderBy(o => Guid.NewGuid()).FirstOrDefaultAsync();
+
+            if (randomQuestion is null)
+                return null;
+
+            return Mapper.Map(randomQuestion);
         }
 
         public async Task<ApplicationCore.Models.Question> AddQuestionAsync(ApplicationCore.Models.Question question)

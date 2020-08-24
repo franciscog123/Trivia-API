@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Trivia_API.Controllers
 {
@@ -41,7 +41,29 @@ namespace Trivia_API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a single question with choices and the category.
+        /// Retrieves all questions with the provided category.
+        /// </summary>
+        /// <param name="categoryId">The categoryId of the questions to be returned.</param>
+        /// <returns></returns>
+        /// <response code="200">Returns the questions.</response>
+        /// <response code="404">If no questions for the category are found or the category does not exist.</response>
+        // GET: api/<QuestionController>/getquestionsbycategory/1
+        [HttpGet("getquestionsbycategory/{categoryId}")]
+        [ProducesResponseType(typeof(IEnumerable<ApplicationCore.Models.Question>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetQuestionsByCategory(int categoryId)
+        {
+            if (await _questionRepo.GetQuestionsByCategoryAsync(categoryId) is IEnumerable<ApplicationCore.Models.Question> questions)
+            {
+                if(questions.Count() > 0)
+                    return Ok(questions);
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Retrieves a single question with choices using the provided id.
         /// </summary>
         /// <param name="id">Thd id of the question to be returned.</param>
         /// <response code="200">Returns the question information.</response>
@@ -54,6 +76,47 @@ namespace Trivia_API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             if (await _questionRepo.GetQuestionAsync(id) is ApplicationCore.Models.Question question)
+                return Ok(question);
+
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Retrieves a random question.
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Returns the random question information.</response>
+        /// <response code="204">If there are no questions in the DB.</response>
+        // GET: api/question/getrandomquestion
+        [HttpGet("getrandomquestion")]
+        [ProducesResponseType(typeof(ApplicationCore.Models.Question), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> GetRandomQuestion()
+        {
+            var question = await _questionRepo.GetRandomQuestionAsync();
+
+            if (question == null)
+                return NoContent();
+
+            return Ok(question);
+        }
+
+        /// <summary>
+        /// Returns a random question within the given category.
+        /// </summary>
+        /// <param name="categoryId">The id of the category to pull a random question from.</param>
+        /// <returns></returns>
+        /// <response code="200">Returns the random question.</response>
+        /// <response code="404">If no question for the category was found or the category does not exist.</response>
+        // GET: api/question/getrandomquestionbycategory/1
+        [HttpGet("getrandomquestionbycategory/{categoryId}")]
+        [ProducesResponseType(typeof(ApplicationCore.Models.Question), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetRandomQuestionByCategory(int categoryId)
+        {
+            var question = await _questionRepo.GetRandomQuestionByCategoryAsync(categoryId);
+
+            if (question != null)
                 return Ok(question);
 
             return NotFound();

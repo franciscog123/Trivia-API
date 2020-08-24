@@ -14,6 +14,8 @@ namespace ApplicationCore.Interfaces
         Task<bool> CategoryExistsAsync(int id);
         Task<bool> EditQuestionAsync(Question question);
         Task<bool> RemoveQuestionAsync(int id);
-        //Task<Question> GetRandomQuestion(int categoryId);
+        Task<IEnumerable<Question>> GetQuestionsByCategoryAsync(int categoryId);
+        Task<Question> GetRandomQuestionAsync();
+        Task<Question> GetRandomQuestionByCategoryAsync(int categoryId);
     }
 }
